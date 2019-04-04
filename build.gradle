@@ -1,0 +1,25 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+mainClassName = 'main.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.sparkjava:spark-core:2.7.2'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    compile 'com.sparkjava:spark-template-freemarker:2.7.1'
+    compile group: 'org.sql2o', name: 'sql2o', version: '1.5.4'
+    compile group: 'org.slf4j',name: 'slf4j-simple', version: '1.7.21'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile group: 'org.jasypt', name: 'jasypt', version: '1.9.2'
+    compile 'org.hibernate:hibernate-core:5.1.0.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
+}
