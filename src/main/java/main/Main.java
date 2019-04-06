@@ -104,7 +104,6 @@ public class Main {
             attributes.put("articulo", articulo2);
             attributes.put("comentarios", articulo2.getListaComentarios());
             attributes.put("etiquetas", articulo2.getListaEtiquetas());
-            System.out.println("eto" + articulo2.getListaEtiquetas());
             attributes.put("cantLikes", LikesService.getInstancia().LikesByArticuloId(articulo2.getId()));
             attributes.put("cantDislikes", LikesService.getInstancia().DislikesByArticuloId(articulo2.getId()));
             attributes.put("usuario", usuario);
@@ -118,7 +117,6 @@ public class Main {
             attributes.put("titulo", "Articulos por: " + etiqueta);
             attributes.put("list", ArticuloService.getInstancia().getAllByEtiqueta(etiqueta));
             attributes.put("etiquetas", EtiquetaService.getInstancia().getAll());
-            System.out.println("eto" + ArticuloService.getInstancia().getAllByEtiqueta(etiqueta));
             attributes.put("usuario", usuario);
             attributes.put("paginas", 1);
             attributes.put("actual", 1);
