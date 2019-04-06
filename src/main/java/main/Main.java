@@ -16,7 +16,6 @@ import java.util.*;
 
 import static spark.Spark.*;
 
-//import org.jasypt.util.text.StrongTextEncryptor;
 
 public class Main {
 
@@ -31,12 +30,13 @@ public class Main {
 
         ServiceInit.crearTablas();
 
+        ArticuloService.getInstancia();
 
-        UsuarioService usuarioService = new UsuarioService();
-        ArticuloService articuloService = new ArticuloService();
-        EtiquetaService etiquetaService = new EtiquetaService();
-        ComentarioService comentarioService = new ComentarioService();
-        LikesService likesService = new LikesService();
+//        UsuarioService.getInstancia() UsuarioService.getInstancia() = new UsuarioService.getInstancia()();
+//        ArticuloService.getInstancia() ArticuloService.getInstancia() = new ArticuloService.getInstancia()();
+//        EtiquetaService.getInstancia() EtiquetaService.getInstancia() = new EtiquetaService.getInstancia()();
+//        ComentarioService.getInstancia() ComentarioService.getInstancia() = new ComentarioService.getInstancia()();
+//        LikesService.getInstancia LikesService.getInstancia = new LikesService.getInstancia();
 
 
         staticFiles.location("/templates");
@@ -67,7 +67,7 @@ public class Main {
                 String user = crypto.decrypt(llaveValor[0], iv, secretKeyUSer);
                 String contra = crypto.decrypt(llaveValor[1], iv, secretKeyContra);
 
-                Usuario usuario1 = usuarioService.validateLogIn(user, contra);
+                Usuario usuario1 = UsuarioService.getInstancia().validateLogIn(user, contra);
                 if (usuario1 != null) {
                     usuario = usuario1;
                     request.session(true);
@@ -85,10 +85,11 @@ public class Main {
             Map<String, Object> attributes = new HashMap<>();
             userLevel(attributes);
             attributes.put("titulo", "Inicio");
-            attributes.put("list", articuloService.getPagination(pagina));
+            System.out.println("Paginacion " + ArticuloService.getInstancia().getPagination(1));
+            attributes.put("list", ArticuloService.getInstancia().getPagination(pagina));
             attributes.put("actual", pagina);
-            attributes.put("paginas", Math.ceil(articuloService.cantPaginas() / 5f));
-            attributes.put("etiquetas", etiquetaService.getAll());
+            attributes.put("paginas", Math.ceil(ArticuloService.getInstancia().cantPaginas() / 5f));
+            attributes.put("etiquetas", EtiquetaService.getInstancia().getAll());
             attributes.put("usuario", usuario);
 
             return new ModelAndView(attributes, "inicio.ftl");
@@ -99,13 +100,13 @@ public class Main {
             Map<String, Object> attributes = new HashMap<>();
             String idArticulo = request.params("id");
             userLevel(attributes);
-            Articulo articulo2 = articuloService.getById(Integer.parseInt(idArticulo));
+            Articulo articulo2 = ArticuloService.getInstancia().getById(Integer.parseInt(idArticulo));
             attributes.put("articulo", articulo2);
             attributes.put("comentarios", articulo2.getListaComentarios());
             attributes.put("etiquetas", articulo2.getListaEtiquetas());
             System.out.println("eto" + articulo2.getListaEtiquetas());
-            attributes.put("cantLikes", likesService.LikesByArticuloId(articulo2.getId()));
-            attributes.put("cantDislikes", likesService.DislikesByArticuloId(articulo2.getId()));
+            attributes.put("cantLikes", LikesService.getInstancia().LikesByArticuloId(articulo2.getId()));
+            attributes.put("cantDislikes", LikesService.getInstancia().DislikesByArticuloId(articulo2.getId()));
             attributes.put("usuario", usuario);
 
             return new ModelAndView(attributes, "post.ftl");
@@ -115,9 +116,9 @@ public class Main {
             String etiqueta = request.params("etiqueta");
             userLevel(attributes);
             attributes.put("titulo", "Articulos por: " + etiqueta);
-            attributes.put("list", articuloService.getAllByEtiqueta(etiqueta));
-            attributes.put("etiquetas", etiquetaService.getAll());
-            System.out.println("eto" + articuloService.getAllByEtiqueta(etiqueta));
+            attributes.put("list", ArticuloService.getInstancia().getAllByEtiqueta(etiqueta));
+            attributes.put("etiquetas", EtiquetaService.getInstancia().getAll());
+            System.out.println("eto" + ArticuloService.getInstancia().getAllByEtiqueta(etiqueta));
             attributes.put("usuario", usuario);
             attributes.put("paginas", 1);
             attributes.put("actual", 1);
@@ -134,12 +135,12 @@ public class Main {
             String articulo = request.queryParams("articulo");
             String autor = request.queryParams("autor");
 
-            Usuario usuario1 = usuarioService.getById(Integer.parseInt(autor));
-            Articulo articulo1 = articuloService.getById(Integer.parseInt(articulo));
+            Usuario usuario1 = UsuarioService.getInstancia().getById(Integer.parseInt(autor));
+            Articulo articulo1 = ArticuloService.getInstancia().getById(Integer.parseInt(articulo));
 
             Comentario comentario1 = new Comentario(comentario, usuario1, articulo1);
 
-            comentarioService.insert(comentario1);
+            ComentarioService.getInstancia().insert(comentario1);
 
             response.redirect("/verMas/" + articulo);
             return "";
@@ -161,16 +162,16 @@ public class Main {
 
             if (usuario != null) {
 
-                a = articuloService.getbyAutor(usuario.getId());
+                a = ArticuloService.getInstancia().getbyAutor(usuario.getId());
             } else {
                 response.redirect("/errorPost");
             }
 
-            if (articuloService.buscarPost(a, articleid) || usuario.getAdministrator()) {
+            if (ArticuloService.getInstancia().buscarPost(a, articleid) || usuario.getAdministrator()) {
 
-                Articulo editar = articuloService.getById(Integer.parseInt(idArticulo));
+                Articulo editar = ArticuloService.getInstancia().getById(Integer.parseInt(idArticulo));
                 attributes.put("articulo", editar);
-                List<Etiqueta> tags = etiquetaService.getByArticulo(Integer.parseInt(idArticulo));
+                List<Etiqueta> tags = EtiquetaService.getInstancia().getByArticulo(Integer.parseInt(idArticulo));
                 StringBuilder res = new StringBuilder();
                 for (int i = 0; i < tags.size(); i++) {
                     if (i == tags.size() - 1) {
@@ -209,7 +210,7 @@ public class Main {
             }
 
             art.setListaEtiquetas(etiquetas1);
-            articuloService.insert(art);
+            ArticuloService.getInstancia().insert(art);
 
             response.redirect("/inicio/1");
             return "";
@@ -225,7 +226,7 @@ public class Main {
 
 
             System.out.println(user + " pass : " + contra);
-            Usuario usuario1 = usuarioService.validateLogIn(user, contra);
+            Usuario usuario1 = UsuarioService.getInstancia().validateLogIn(user, contra);
 
             if (usuario1 != null) {
 
@@ -264,12 +265,12 @@ public class Main {
             long now = System.currentTimeMillis();
             java.sql.Date nowsql = new java.sql.Date(now);
             Articulo art = new Articulo(articleid, titulo, cuerpo, autor, nowsql);
-            articuloService.update(art);
+            ArticuloService.getInstancia().update(art);
             String tags = request.queryParams("etiquetas");
 
             String[] tagArray = tags.split(",");
 
-            List<Etiqueta> l = etiquetaService.getByArticulo(articleid);
+            List<Etiqueta> l = EtiquetaService.getInstancia().getByArticulo(articleid);
 
             for (String aTagArray : tagArray) {
                 boolean exists = false;
@@ -279,7 +280,7 @@ public class Main {
                     }
                 }
                 if (!exists) {
-                    etiquetaService.insert(new Etiqueta(aTagArray, art));
+                    EtiquetaService.getInstancia().insert(new Etiqueta(aTagArray, art));
                 }
             }
             response.redirect("/verMas/" + idArticulo);
@@ -297,7 +298,7 @@ public class Main {
             long idArticulo = Integer.parseInt(articulo);
 
             if (usuario != null && (idAutor == usuario.getId() || usuario.getAdministrator())) {
-                articuloService.delete(articuloService.getById(idArticulo));
+                ArticuloService.getInstancia().delete(ArticuloService.getInstancia().getById(idArticulo));
                 response.redirect("/inicio/1");
             } else {
                 response.redirect("/errorPost");
@@ -320,7 +321,7 @@ public class Main {
             String autor = request.queryParams("autor");
             String admin = request.queryParams("admin");
             Usuario u = new Usuario(username, nombre, pass, admin != null, autor != null);
-            usuarioService.insert(u);
+            UsuarioService.getInstancia().insert(u);
             response.redirect("/inicio/1");
             return "";
         });
@@ -348,7 +349,7 @@ public class Main {
         get("/verUsuarios", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
 
-            attributes.put("usuarios", usuarioService.getAll());
+            attributes.put("usuarios", UsuarioService.getInstancia().getAll());
 
             return new ModelAndView(attributes, "verUsuarios.ftl");
         }, freeMarkerEngine);
@@ -357,14 +358,14 @@ public class Main {
         get("/ver/:id", (request, response) -> {
             String id = request.params("id");
 
-            Usuario usuario = usuarioService.getById(Integer.parseInt(id));
+            Usuario usuario = UsuarioService.getInstancia().getById(Integer.parseInt(id));
 
 
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("titulo", "Posts de " + usuario.getNombre());
             attributes.put("usuario", usuario);
-            attributes.put("etiquetas", etiquetaService.getAll());
-            attributes.put("list", articuloService.getbyAutor(usuario.getId()));
+            attributes.put("etiquetas", EtiquetaService.getInstancia().getAll());
+            attributes.put("list", ArticuloService.getInstancia().getbyAutor(usuario.getId()));
             userLevel(attributes);
             return new ModelAndView(attributes, "inicio.ftl");
         }, freeMarkerEngine);
@@ -377,34 +378,34 @@ public class Main {
             int idPost = Integer.parseInt(post);
 
             Usuario usuario = request.session(true).attribute("usuario");
-            Articulo articulo = articuloService.getById(idPost);
+            Articulo articulo = ArticuloService.getInstancia().getById(idPost);
             if (usuario != null) {
 
-                if (!likesService.existsUsuario(usuario.getId(), TipoLike.LIKE) && !likesService.existsUsuario(usuario.getId(), TipoLike.DISLIKE)) {
+                if (!LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.LIKE) && !LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.DISLIKE)) {
 
 
                     Likes likes1 = new Likes(articulo, usuario, TipoLike.LIKE);
 
-                    likesService.guardar(likes1);
+                    LikesService.getInstancia().guardar(likes1);
 
 
                     response.redirect("/verMas/" + articulo.getId());
 
                 } else {
 
-                    if (likesService.existsUsuario(usuario.getId(), TipoLike.LIKE)) {
+                    if (LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.LIKE)) {
 
-                        Likes likes = likesService.buscarByUsuario(usuario);
-                        likesService.borrar(likes);
+                        Likes likes = LikesService.getInstancia().buscarByUsuario(usuario);
+                        LikesService.getInstancia().borrar(likes);
                     }
 
-                    if (likesService.existsUsuario(usuario.getId(), TipoLike.DISLIKE)) {
+                    if (LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.DISLIKE)) {
 
-                        Likes likes = likesService.buscarByUsuario(usuario);
-                        likesService.borrar(likes);
+                        Likes likes = LikesService.getInstancia().buscarByUsuario(usuario);
+                        LikesService.getInstancia().borrar(likes);
 
                         Likes likes1 = new Likes(articulo, usuario, TipoLike.LIKE);
-                        likesService.guardar(likes1);
+                        LikesService.getInstancia().guardar(likes1);
 
 
                     }
@@ -425,34 +426,34 @@ public class Main {
 
             int idPost = Integer.parseInt(post);
             Usuario usuario = request.session(true).attribute("usuario");
-            Articulo articulo = articuloService.getById(idPost);
+            Articulo articulo = ArticuloService.getInstancia().getById(idPost);
 
             if (usuario != null) {
 
-                if (!likesService.existsUsuario(usuario.getId(), TipoLike.DISLIKE) && !likesService.existsUsuario(usuario.getId(), TipoLike.LIKE)) {
+                if (!LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.DISLIKE) && !LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.LIKE)) {
 
 
                     Likes likes1 = new Likes(articulo, usuario, TipoLike.DISLIKE);
-                    likesService.guardar(likes1);
+                    LikesService.getInstancia().guardar(likes1);
 
 
                     response.redirect("/verMas/" + articulo.getId());
 
                 } else {
 
-                    if (likesService.existsUsuario(usuario.getId(), TipoLike.DISLIKE)) {
-                        Likes likes = likesService.buscarByUsuario(usuario);
-                        likesService.borrar(likes);
+                    if (LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.DISLIKE)) {
+                        Likes likes = LikesService.getInstancia().buscarByUsuario(usuario);
+                        LikesService.getInstancia().borrar(likes);
 
                     }
 
-                    if (likesService.existsUsuario(usuario.getId(), TipoLike.LIKE)) {
+                    if (LikesService.getInstancia().existsUsuario(usuario.getId(), TipoLike.LIKE)) {
 
-                        Likes likes = likesService.buscarByUsuario(usuario);
-                        likesService.borrar(likes);
+                        Likes likes = LikesService.getInstancia().buscarByUsuario(usuario);
+                        LikesService.getInstancia().borrar(likes);
 
                         Likes likes1 = new Likes(articulo, usuario, TipoLike.DISLIKE);
-                        likesService.guardar(likes1);
+                        LikesService.getInstancia().guardar(likes1);
 
 
                     }

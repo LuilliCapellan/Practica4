@@ -37,6 +37,7 @@ public class ArticuloDAOImpl extends CRUD<Articulo> implements ArticuloDAO {
 
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Articulo.findAllArticulo");
+
         return (List<Articulo>) query.getResultList();
     }
 
@@ -63,12 +64,12 @@ public class ArticuloDAOImpl extends CRUD<Articulo> implements ArticuloDAO {
 
         try {
             Query query = em.createQuery("select a from Articulo a order by a.id desc");
-
+            System.out.println(query.getFirstResult() + "query");
             query.setFirstResult((pag - 1) * 5);
             query.setMaxResults(5);
-
             return query.getResultList();
         } catch (Exception ex) {
+            System.out.println("no silve");
             return null;
         } finally {
             em.close();

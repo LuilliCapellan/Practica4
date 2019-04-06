@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @NamedQueries({@NamedQuery(name = "Articulo.findAllArticulo", query = "select a from Articulo a order by a.fecha desc "),
-        @NamedQuery(name = "Articulo.findArticulobyAuthorId", query = "select a from Articulo a where a.autor = :id"),
+        @NamedQuery(name =  "Articulo.findArticulobyAuthorId", query = "select a from Articulo a where a.autor = :id"),
         @NamedQuery(name = "Articulo.findArticulobyId", query = "select a from Articulo a where a.id = :id"),
         @NamedQuery(name = "Articulo.findArticulobyEtiqueta", query = "select a from Articulo a, Etiqueta e where a.id = e.articulo.id and e.etiqueta = :etiqueta")})
 public class Articulo implements Serializable {

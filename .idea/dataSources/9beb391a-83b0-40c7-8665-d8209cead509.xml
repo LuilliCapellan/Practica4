@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="jdbc:h2:tcp://localhost/~/blog">
+  <database-model serializer="dbm" dbms="H2" family-id="H2" format-version="4.14">
+    <root id="1">
+      <ServerVersion>1.4.196</ServerVersion>
+    </root>
+    <database id="2" parent="1" name="BLOG">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </database>
+    <schema id="3" parent="2" name="INFORMATION_SCHEMA"/>
+    <schema id="4" parent="2" name="PUBLIC">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <table id="5" parent="4" name="ARTICULO"/>
+    <table id="6" parent="4" name="COMENTARIO"/>
+    <table id="7" parent="4" name="ETIQUETA"/>
+    <table id="8" parent="4" name="LIKES"/>
+    <table id="9" parent="4" name="USUARIO"/>
+    <column id="10" parent="5" name="ARTICULO_ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_44FD5785_2A97_449E_B6ED_366033079850)</DefaultExpression>
+    </column>
+    <column id="11" parent="5" name="CUERPO">
+      <Position>2</Position>
+      <DataType>CLOB(max)|2005s</DataType>
+    </column>
+    <column id="12" parent="5" name="FECHA">
+      <Position>3</Position>
+      <DataType>DATE(10)|91s</DataType>
+    </column>
+    <column id="13" parent="5" name="TITULO">
+      <Position>4</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="14" parent="5" name="AUTOR_USUARIO_ID">
+      <Position>5</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+    </column>
+    <index id="15" parent="5" name="PRIMARY_KEY_E">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ARTICULO_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="16" parent="5" name="FKN1UNCDL9B3KCOAASU9BEENGOJ_INDEX_E">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>AUTOR_USUARIO_ID</ColNames>
+    </index>
+    <key id="17" parent="5" name="CONSTRAINT_E">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ARTICULO_ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="18" parent="5" name="FKN1UNCDL9B3KCOAASU9BEENGOJ">
+      <ColNames>AUTOR_USUARIO_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>USUARIO</RefTableName>
+      <RefKeyName>CONSTRAINT_2</RefKeyName>
+      <RefColNames>USUARIO_ID</RefColNames>
+    </foreign-key>
+    <column id="19" parent="6" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_3B88E914_9B74_4B5C_8AAF_8909CA059FED)</DefaultExpression>
+    </column>
+    <column id="20" parent="6" name="COMENTARIO">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="21" parent="6" name="ARTICULO_ARTICULO_ID">
+      <Position>3</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+    </column>
+    <column id="22" parent="6" name="AUTOR_USUARIO_ID">
+      <Position>4</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+    </column>
+    <index id="23" parent="6" name="PRIMARY_KEY_B">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="24" parent="6" name="FKCA2K4KAH1F2ABWC7FILS6E3F1_INDEX_B">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ARTICULO_ARTICULO_ID</ColNames>
+    </index>
+    <index id="25" parent="6" name="FK4IXI9IK0G6FFRAAUCMS1C2D0N_INDEX_B">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>AUTOR_USUARIO_ID</ColNames>
+    </index>
+    <key id="26" parent="6" name="CONSTRAINT_B">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="27" parent="6" name="FKCA2K4KAH1F2ABWC7FILS6E3F1">
+      <ColNames>ARTICULO_ARTICULO_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>ARTICULO</RefTableName>
+      <RefKeyName>CONSTRAINT_E</RefKeyName>
+      <RefColNames>ARTICULO_ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="28" parent="6" name="FK4IXI9IK0G6FFRAAUCMS1C2D0N">
+      <ColNames>AUTOR_USUARIO_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>USUARIO</RefTableName>
+      <RefKeyName>CONSTRAINT_2</RefKeyName>
+      <RefColNames>USUARIO_ID</RefColNames>
+    </foreign-key>
+    <column id="29" parent="7" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_DEE41AD0_2110_4C2C_B819_1482B9F4138F)</DefaultExpression>
+    </column>
+    <column id="30" parent="7" name="ETIQUETA">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="31" parent="7" name="ARTICULO_ARTICULO_ID">
+      <Position>3</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+    </column>
+    <index id="32" parent="7" name="PRIMARY_KEY_D">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="33" parent="7" name="FK1OMCL3EIQ86YLWD2WQV3N4OOT_INDEX_D">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ARTICULO_ARTICULO_ID</ColNames>
+    </index>
+    <key id="34" parent="7" name="CONSTRAINT_D">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="35" parent="7" name="FK1OMCL3EIQ86YLWD2WQV3N4OOT">
+      <ColNames>ARTICULO_ARTICULO_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>ARTICULO</RefTableName>
+      <RefKeyName>CONSTRAINT_E</RefKeyName>
+      <RefColNames>ARTICULO_ID</RefColNames>
+    </foreign-key>
+    <column id="36" parent="8" name="LIKES_ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_49E44D4F_7EC6_44B1_AE8F_4DB622E18D78)</DefaultExpression>
+    </column>
+    <column id="37" parent="8" name="TIPOLIKE">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="38" parent="8" name="ARTICULO_ID">
+      <Position>3</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+    </column>
+    <column id="39" parent="8" name="USUARIO_ID">
+      <Position>4</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+    </column>
+    <index id="40" parent="8" name="PRIMARY_KEY_4">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>LIKES_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="41" parent="8" name="FKIY5X81BA1VRK7YHREF5BT0YHB_INDEX_4">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ARTICULO_ID</ColNames>
+    </index>
+    <index id="42" parent="8" name="FK4CACFCPY4RGV7WQNDJS4UYEPM_INDEX_4">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>USUARIO_ID</ColNames>
+    </index>
+    <key id="43" parent="8" name="CONSTRAINT_4">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>LIKES_ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="44" parent="8" name="FKIY5X81BA1VRK7YHREF5BT0YHB">
+      <ColNames>ARTICULO_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>ARTICULO</RefTableName>
+      <RefKeyName>CONSTRAINT_E</RefKeyName>
+      <RefColNames>ARTICULO_ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="45" parent="8" name="FK4CACFCPY4RGV7WQNDJS4UYEPM">
+      <ColNames>USUARIO_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>USUARIO</RefTableName>
+      <RefKeyName>CONSTRAINT_2</RefKeyName>
+      <RefColNames>USUARIO_ID</RefColNames>
+    </foreign-key>
+    <column id="46" parent="9" name="USUARIO_ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_2AC73C28_4FFA_4E21_ADAA_3C82815C8CCF)</DefaultExpression>
+    </column>
+    <column id="47" parent="9" name="ADMINISTRATOR">
+      <Position>2</Position>
+      <DataType>BOOLEAN|16s</DataType>
+    </column>
+    <column id="48" parent="9" name="AUTOR">
+      <Position>3</Position>
+      <DataType>BOOLEAN|16s</DataType>
+    </column>
+    <column id="49" parent="9" name="NOMBRE">
+      <Position>4</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="50" parent="9" name="PASSWORD">
+      <Position>5</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="51" parent="9" name="USERNAME">
+      <Position>6</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <index id="52" parent="9" name="PRIMARY_KEY_2">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>USUARIO_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="53" parent="9" name="CONSTRAINT_2">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>USUARIO_ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

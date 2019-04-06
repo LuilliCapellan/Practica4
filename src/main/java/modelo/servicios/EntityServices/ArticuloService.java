@@ -10,16 +10,17 @@ public class ArticuloService implements ArticuloDAO {
     private ArticuloDAOImpl articuloDAO;
     private static ArticuloService instancia;
 
-    public static ArticuloService getInstancia(){
+    public ArticuloService() {
+        articuloDAO = new ArticuloDAOImpl(Articulo.class);
+    }
+
+    public static ArticuloService getInstancia() {
         if (instancia == null)
             instancia = new ArticuloService();
 
         return instancia;
     }
 
-    public ArticuloService(){
-        articuloDAO = new ArticuloDAOImpl(Articulo.class);
-    }
 
     @Override
     public void insert(Articulo e) {
@@ -67,9 +68,9 @@ public class ArticuloService implements ArticuloDAO {
     }
 
 
-    public boolean buscarPost(List<Articulo> articulos, long id){
+    public boolean buscarPost(List<Articulo> articulos, long id) {
 
-        for (Articulo articulo:articulos) {
+        for (Articulo articulo : articulos) {
             if (articulo.getId() == id)
                 return true;
         }
